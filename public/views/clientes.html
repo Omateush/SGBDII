@@ -1,0 +1,20 @@
+<h1>Clientes</h1>
+
+<!-- Formulário para adicionar cliente -->
+<form ng-submit="adicionarCliente()">
+    <input type="text" ng-model="novoCliente._id" placeholder="ID do Cliente (ex: CLI001)" required>
+    <input type="text" ng-model="novoCliente.nome" placeholder="Nome" required>
+    <input type="number" ng-model="novoCliente.idade" placeholder="Idade" required>
+    <input type="email" ng-model="novoCliente.email" placeholder="Email" required>
+    <input type="text" ng-model="novoCliente.endereco" placeholder="Endereço" required>
+    <input type="text" ng-model="novoCliente.telefone" placeholder="Telefone (opcional)">
+    <button type="submit">Adicionar Cliente</button>
+</form>
+
+<ul>
+    <li ng-repeat="cliente in clientes">
+        {{ cliente.nome }} - {{ cliente.email }}
+        <button ng-click="removerCliente(cliente._id)">Deletar</button>
+    </li>
+
+</ul>
