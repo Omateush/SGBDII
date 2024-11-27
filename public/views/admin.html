@@ -1,0 +1,26 @@
+<div>
+    <h1>Admin Panel</h1>
+    <button ng-click="logout()">Logout</button>
+
+    <h2>Produtos</h2>
+    <ul>
+        <li ng-repeat="product in products">
+            {{ product.nomeProduto }} - {{ product.preco }} - {{ product.categoria }}
+            <button ng-click="deleteProduct($index)">Deletar</button>
+        </li>
+    </ul>
+
+    <h3>Adicionar Produto</h3>
+    <form ng-submit="addProduct()">
+        <label>Nome:</label>
+        <input type="text" ng-model="newProduct.nomeProduto" required>
+        <br>
+        <label>Preço:</label>
+        <input type="number" ng-model="newProduct.preco" required>
+        <br>
+        <label>Categoria:</label>
+        <input type="text" ng-model="newProduct.categoria" required>
+        <br>
+        <button type="submit">Adicionar</button>
+    </form>
+</div>
