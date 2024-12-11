@@ -10,11 +10,15 @@ app.use(express.json()); // Necessário para lidar com req.body
 // Middleware para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
 
-// Conexão com o MongoDB
+// Conexão com o MongoDB Atlas
 mongoose
-    .connect("mongodb://localhost:27017/lojaInformatica", { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Conectado ao MongoDB"))
-    .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
+    .connect("mongodb+srv://joao:joao@cluster0.2imm3.mongodb.net/lojaInformatica?retryWrites=true&w=majority", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log("Conectado ao MongoDB Atlas"))
+    .catch((err) => console.error("Erro ao conectar ao MongoDB Atlas:", err));
+
 
 // Rotas
 const authRoutes = require("./routes/authRoutes");
@@ -25,7 +29,6 @@ app.use("/api/clientes", clientesRoutes);
 
 const produtosRoutes = require("./routes/produtosRoutes");
 app.use("/api/produtos", produtosRoutes);
-
 
 // Rota para lidar com SPA (Single Page Application), redirecionando sempre para `index.html`
 app.get("*", (req, res) => {
