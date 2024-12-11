@@ -1,16 +1,8 @@
-<h1>Produtos</h1>
-<form ng-submit="adicionarProduto()">
-    <input type="text" ng-model="novoProduto.nomeProduto" placeholder="Nome do Produto" required>
-    <input type="number" ng-model="novoProduto.preco" placeholder="Preço" required>
-    <input type="text" ng-model="novoProduto.categoria" placeholder="Categoria" required>
-    <input type="number" ng-model="novoProduto.stock" placeholder="Estoque" required>
-    <textarea ng-model="novoProduto.descricao" placeholder="Descrição"></textarea>
-    <button type="submit">Adicionar Produto</button>
-</form>
-
-<ul>
-    <li ng-repeat="produto in produtos">
-        {{ produto.nomeProduto }} - R$ {{ produto.preco }}
-        <button ng-click="removerProduto(produto._id)">Deletar</button>
-    </li>
-</ul>
+<div ng-controller="produtosController">
+    <h1>Produtos</h1>
+    <ul>
+        <li ng-repeat="produto in produtos">
+            {{ produto.nomeProduto }} - {{ produto.preco }} - {{ produto.categoria }}
+        </li>
+    </ul>
+</div>

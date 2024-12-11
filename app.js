@@ -26,6 +26,7 @@ app.use("/api/clientes", clientesRoutes);
 const produtosRoutes = require("./routes/produtosRoutes");
 app.use("/api/produtos", produtosRoutes);
 
+
 // Rota para lidar com SPA (Single Page Application), redirecionando sempre para `index.html`
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
