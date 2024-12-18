@@ -1,27 +1,55 @@
-app.controller("adminController", function ($scope, authService, $location) {
-    $scope.logout = function () {
-        authService.logout();
-        $location.path("/login");
+app.controller("produtosController", function ($scope, $http, authService) {
+    const token = authService.getToken();
+    $scope.produtos = [];
+    $scope.editingProduto = null;
+
+    // Carregar produtos
+    $scope.getProdutos = function () {
+        $http.get("/api/produtos", { headers: { Authorization: `Bearer ${token}` } })
+            .then(response => $scope.produtos = response.data)
+            .catch(error => console.error("Erro ao carregar produtos:", error));
     };
 
-    $scope.products = [
-        // Produtos exemplo para teste inicial
-        { nomeProduto: "Teclado", preco: 100, categoria: "Periféricos" },
-        { nomeProduto: "Mouse", preco: 50, categoria: "Periféricos" }
-    ];
-
-    $scope.addProduct = function () {
-        const newProduct = {
-            nomeProduto: $scope.newProduct.nomeProduto,
-            preco: $scope.newProduct.preco,
-            categoria: $scope.newProduct.categoria
+    // Adicionar produto
+    $scope.addProduto = function () {
+        const newProduto = {
+            nomeProduto: $scope.nomeProduto,
+            preco: $scope.preco,
+            categoria: $scope.categoria,
+            stock: $scope.stock,
+            descricao: $scope.descricao
         };
-
-        $scope.products.push(newProduct);
-        $scope.newProduct = {};
+        $http.post("/api/produtos", newProduto, { headers: { Authorization: `Bearer ${token}` } })
+            .then(() => {
+                $scope.getProdutos();
+                $scope.nomeProduto = $scope.preco = $scope.categoria = $scope.stock = $scope.descricao = "";
+            })
+            .catch(error => console.error("Erro ao adicionar produto:", error));
     };
 
-    $scope.deleteProduct = function (index) {
-        $scope.products.splice(index, 1);
+    // Editar produto
+    $scope.editarProduto = function (produto) {
+        $scope.editingProduto = angular.copy(produto);
     };
+
+    // Salvar edição do produto
+    $scope.salvarProduto = function () {
+        const produto = $scope.editingProduto;
+        $http.put(`/api/produtos/${produto._id}`, produto, { headers: { Authorization: `Bearer ${token}` } })
+            .then(() => {
+                $scope.getProdutos();
+                $scope.editingProduto = null;
+            })
+            .catch(error => console.error("Erro ao editar produto:", error));
+    };
+
+    // Deletar produto
+    $scope.deleteProduto = function (id) {
+        $http.delete(`/api/produtos/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+            .then(() => $scope.getProdutos())
+            .catch(error => console.error("Erro ao apagar produto:", error));
+    };
+
+    // Inicializar lista de produtos
+    $scope.getProdutos();
 });

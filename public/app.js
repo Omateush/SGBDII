@@ -1,6 +1,5 @@
 const app = angular.module("app", ["ngRoute"]); // Define o módulo principal
 
-
 app.config(function ($routeProvider) {
     $routeProvider
         .when("/login", {
@@ -9,7 +8,7 @@ app.config(function ($routeProvider) {
         })
         .when("/admin", {
             templateUrl: "views/admin.html",
-            controller: "adminController"
+            controller: "produtosController" // Alinhado com o HTML
         })
         .when("/produtos", {
             templateUrl: "views/produtos.html",

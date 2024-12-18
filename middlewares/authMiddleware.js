@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config(); // Carregar variáveis de ambiente do arquivo .env
 
 module.exports = (requiredRole) => {
     return (req, res, next) => {
@@ -8,7 +9,7 @@ module.exports = (requiredRole) => {
         }
 
         try {
-            const decoded = jwt.verify(token, "chave_secreta");
+            const decoded = jwt.verify(token, process.env.JWT_SECRET); // Usar chave secreta do .env
             req.user = decoded;
 
             if (requiredRole && decoded.role !== requiredRole) {
