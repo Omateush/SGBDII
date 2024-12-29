@@ -1,7 +1,9 @@
-<h1>Produtos</h1>
 <ul>
     <li ng-repeat="produto in produtos">
-        {{ produto.nomeProduto }} - {{ produto.preco | currency:"€" }} - {{ produto.categoria }}
+        <span>
+            {{ produto.nomeProduto }} - {{ produto.preco | currency:"€" }} - {{ produto.categoria }}
+            <small>(Estoque: {{ produto.stock }})</small>
+        </span>
         <button ng-click="comprarProduto(produto)">Comprar</button>
     </li>
 </ul>
