@@ -21,10 +21,13 @@ mongoose
 const authRoutes = require("./routes/authRoutes");
 const produtosRoutes = require("./routes/produtosRoutes");
 const clientesRoutes = require("./routes/clientesRoutes");
+const comprasRoutes = require("./routes/comprasRoutes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/produtos", produtosRoutes);
 app.use("/api/clientes", clientesRoutes);
+app.use("/api/compras", comprasRoutes);
+
 
 // Rota para Single Page Application
 app.get("*", (req, res) => {

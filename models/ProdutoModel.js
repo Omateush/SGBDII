@@ -4,8 +4,9 @@ const produtoSchema = new mongoose.Schema({
     nomeProduto: { type: String, required: true },
     preco: { type: Number, required: true },
     categoria: { type: String, required: true },
-    stock: { type: Number, required: true },
-    descricao: { type: String, required: false },
+    stock: { type: Number, required: true, min: 0 },
+    descricao: { type: String }
 });
 
-module.exports = mongoose.model("Produto", produtoSchema);
+// Verifique se o modelo já foi registrado
+module.exports = mongoose.models.Produto || mongoose.model("Produto", produtoSchema);

@@ -6,8 +6,12 @@ app.controller("produtosController", function ($scope, $http, authService) {
     // Carregar produtos
     $scope.getProdutos = function () {
         $http.get("/api/produtos", { headers: { Authorization: `Bearer ${token}` } })
-            .then(response => $scope.produtos = response.data)
-            .catch(error => console.error("Erro ao carregar produtos:", error));
+            .then((response) => {
+                $scope.produtos = response.data;
+            })
+            .catch((error) => {
+                console.error("Erro ao carregar produtos:", error);
+            });
     };
 
     // Adicionar produto
@@ -17,47 +21,84 @@ app.controller("produtosController", function ($scope, $http, authService) {
             preco: $scope.preco,
             categoria: $scope.categoria,
             stock: $scope.stock,
-            descricao: $scope.descricao
+            descricao: $scope.descricao,
         };
+
         $http.post("/api/produtos", newProduto, { headers: { Authorization: `Bearer ${token}` } })
             .then(() => {
-                $scope.getProdutos();
-                $scope.resetFormulario();
+                $scope.getProdutos(); // Atualiza a lista de produtos
+                $scope.resetFormulario(); // Reseta o formulário
             })
-            .catch(error => console.error("Erro ao adicionar produto:", error));
+            .catch((error) => {
+                console.error("Erro ao adicionar produto:", error);
+            });
     };
 
     // Iniciar edição do produto
     $scope.editarProduto = function (produto) {
-        $scope.editingProduto = angular.copy(produto);
+        $scope.editingProduto = angular.copy(produto); // Cria uma cópia do produto para edição
     };
 
     // Salvar alterações do produto
     $scope.salvarProduto = function () {
         const produto = $scope.editingProduto;
+
         $http.put(`/api/produtos/${produto._id}`, produto, { headers: { Authorization: `Bearer ${token}` } })
             .then(() => {
-                $scope.getProdutos();
-                $scope.editingProduto = null;
+                $scope.getProdutos(); // Atualiza a lista de produtos
+                $scope.editingProduto = null; // Cancela o estado de edição
             })
-            .catch(error => console.error("Erro ao editar produto:", error));
+            .catch((error) => {
+                console.error("Erro ao editar produto:", error);
+            });
     };
 
     // Cancelar edição
     $scope.cancelarEdicao = function () {
-        $scope.editingProduto = null;
+        $scope.editingProduto = null; // Reseta o estado de edição
     };
 
     // Resetar o formulário
     $scope.resetFormulario = function () {
-        $scope.nomeProduto = $scope.preco = $scope.categoria = $scope.stock = $scope.descricao = "";
+        $scope.nomeProduto = "";
+        $scope.preco = "";
+        $scope.categoria = "";
+        $scope.stock = "";
+        $scope.descricao = "";
     };
 
     // Deletar produto
     $scope.deleteProduto = function (id) {
         $http.delete(`/api/produtos/${id}`, { headers: { Authorization: `Bearer ${token}` } })
-            .then(() => $scope.getProdutos())
-            .catch(error => console.error("Erro ao apagar produto:", error));
+            .then(() => {
+                $scope.getProdutos(); // Atualiza a lista de produtos
+            })
+            .catch((error) => {
+                console.error("Erro ao apagar produto:", error);
+            });
+    };
+
+    // Comprar produto
+    $scope.comprarProduto = function (produto) {
+        const compra = {
+            produtoId: produto._id,
+            quantidade: 1, // Quantidade padrão
+        };
+
+        $http.post("/api/compras", compra, { headers: { Authorization: `Bearer ${token}` } })
+            .then((response) => {
+                alert(
+                    `Produto "${produto.nomeProduto}" comprado com sucesso! Valor: ${produto.preco.toFixed(2)} €`
+                );
+                $scope.getProdutos(); // Atualiza a lista para refletir o estoque
+            })
+            .catch((error) => {
+                if (error.data?.error) {
+                    alert(`Erro: ${error.data.error}`);
+                } else {
+                    console.error("Erro ao comprar produto:", error);
+                }
+            });
     };
 
     // Inicializar lista de produtos

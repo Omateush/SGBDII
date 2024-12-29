@@ -1,8 +1,7 @@
-<div ng-controller="produtosController">
-    <h1>Produtos</h1>
-    <ul>
-        <li ng-repeat="produto in produtos">
-            {{ produto.nomeProduto }} - {{ produto.preco }} - {{ produto.categoria }}
-        </li>
-    </ul>
-</div>
+<h1>Produtos</h1>
+<ul>
+    <li ng-repeat="produto in produtos">
+        {{ produto.nomeProduto }} - {{ produto.preco | currency:"€" }} - {{ produto.categoria }}
+        <button ng-click="comprarProduto(produto)">Comprar</button>
+    </li>
+</ul>
